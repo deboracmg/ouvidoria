@@ -41,7 +41,9 @@ def criarFeedbacks(conexao, tipos):
 
 
 def quantidadeFeedbacks(conexao):
-    ...
+    sql= "select count(*) from feedbacks"
+    quantidade= listarBancoDados(conexao,sql)
+    print ("Total de feedbacks registrados:", quantidade[0][0])
 
 
 def pesquisarPorCodigo(conexao):
