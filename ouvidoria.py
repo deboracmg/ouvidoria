@@ -47,9 +47,27 @@ def quantidadeFeedbacks(conexao):
 
 
 def pesquisarPorCodigo(conexao):
-    ...
+    codigo = int(input("Digite o código do feedback para visualizar: "))
+    sql = "select * from feedbacks where codigo = %s"
+    dados = [codigo]
+    feedback = listarBancoDados(conexao, sql, dados)
+
+    if feedback:
+        print(f"Assunto: {feedback[0][1]} | Descrição: {feedback[0][2]} | Autor: {feedback[0][3]} | Tipo: {feedback[0][4]}")
+
+    else:
+        print("Não existe feedback para o código informado.")
 
 
 def excluirPorCodigo(conexao):
-    ...
+    codigo = int(input("Digite o código do feedback para excluir: "))
+    sql = "delete from feedbacks where codigo = %s"
+    dados = [codigo]
+    rows_affecteds = excluirBancoDados(conexao, sql, dados)
+
+    if rows_affecteds==0:
+        print("Não existe feedback para o código informado.")
+
+    else:
+        print(f"Feedback Nº {codigo} excluído com sucesso!")
 
