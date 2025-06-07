@@ -1,7 +1,14 @@
 from operacoesbd import *
 
 def listarFeedbacks(conexao):
-    ...
+    sql="select * from feedbacks"
+    feedbacks = listarBancoDados(conexao,sql)
+    if feedbacks:
+        print(f"\nLista de Feedbacks")
+        for i in feedbacks:
+            print(f"{i[0]} - Assunto: {i[1]} | Descrição: {i[2]} | Autor: {i[3]} | Tipo: {i[4]}")
+    else:
+        print("\nNão existem feedbacks registrados.")
 
 
 def listaPorTipo(conexao, tipos):
