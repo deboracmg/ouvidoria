@@ -11,18 +11,24 @@ def listarFeedbacks(conexao):
         print("\nNão existem feedbacks registrados.")
 
 
-def listaPorTipo(conexao, tipos):
+def listarPorTipo(conexao, tipos):
     sql="select * from feedbacks where tipo=%s"
 
     print("\nQual tipo desejar vizualizar?")
     for p, i in enumerate(tipos):
         print(f"{p+1} - {i}")
-    tipo=tipos[int(input("Digite o número da sua escolha: "))-1]
-    dados=[tipo]
+    
+    try:
+        opcao=tipos[int(input("Digite o número da sua escolha: "))-1]
+    except IndexError:
+        print("Opção inválida. Tente novamente!")
+        return
+        
+    dados=[opcao]
 
     feedbacks = listarBancoDados(conexao, sql, dados)
     if feedbacks:
-        print(f"\nLista de Feedbacks ({tipo})")
+        print(f"\nLista de Feedbacks ({opcao})")
         for i in feedbacks:
             print(f"{i[0]} - Assunto: {i[1]} | Descrição: {i[2]} | Autor: {i[3]} | Tipo: {i[4]}")
     else:
@@ -35,7 +41,13 @@ def criarFeedbacks(conexao, tipos):
     print("\nO que você deseja fazer?")
     for p, i in enumerate(tipos):
         print(f"{p+1} - {i}")
-    tipo=tipos[int(input("Digite o número da sua escolha: "))-1]
+
+    try:
+        tipo=tipos[int(input("Digite o número da sua escolha: "))-1]
+    except IndexError:
+        print("Opção inválida. Tente novamente!")
+        return
+    
     titulo=input("\nDigite o assunto: ").capitalize()
     descricao=input("Digite a descrição: ").capitalize()
     autor=input("Digite seu nome: ").capitalize()
@@ -54,27 +66,25 @@ def quantidadeFeedbacks(conexao):
 
 
 def pesquisarPorCodigo(conexao):
-    codigo = int(input("Digite o código do feedback para visualizar: "))
+    codigo = int(input("\nDigite o código do feedback para visualizar: "))
     sql = "select * from feedbacks where codigo = %s"
     dados = [codigo]
     feedback = listarBancoDados(conexao, sql, dados)
 
     if feedback:
         print(f"Assunto: {feedback[0][1]} | Descrição: {feedback[0][2]} | Autor: {feedback[0][3]} | Tipo: {feedback[0][4]}")
-
     else:
         print("Não existe feedback para o código informado.")
 
 
 def excluirPorCodigo(conexao):
-    codigo = int(input("Digite o código do feedback para excluir: "))
+    codigo = int(input("\nDigite o código do feedback para excluir: "))
     sql = "delete from feedbacks where codigo = %s"
     dados = [codigo]
     rows_affecteds = excluirBancoDados(conexao, sql, dados)
 
     if rows_affecteds==0:
         print("Não existe feedback para o código informado.")
-
     else:
         print(f"Feedback Nº {codigo} excluído com sucesso!")
 
